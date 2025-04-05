@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Splash screen
+    implementation(libs.androidx.core.splashscreen)
+
     // Koin
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)

@@ -1,6 +1,5 @@
-package com.jesusd0897.rickandmorty.ui.theme
+package com.jesusd0897.rickandmorty.view.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.jesusd0897.rickandmorty.ui.theme
+package com.jesusd0897.rickandmorty.view.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

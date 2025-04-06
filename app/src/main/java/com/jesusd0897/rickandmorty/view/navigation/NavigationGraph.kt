@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jesusd0897.rickandmorty.view.screen.detail.DetailScreen
+import com.jesusd0897.rickandmorty.view.screen.detail.CharacterDetailScreen
 import com.jesusd0897.rickandmorty.view.screen.home.HomeScreen
 
 /**
@@ -50,7 +50,7 @@ internal fun NavigationGraph(navController: NavHostController = rememberNavContr
             route = Nav.Detail.route,
             arguments = listOf(navArgument(Nav.CHARACTER_ID) { type = NavType.IntType }),
         ) {
-            DetailScreen(
+            CharacterDetailScreen(
                 onNavigate = { destination ->
                     if (destination is DetailNavDestination.Back) {
                         navController.navigateUp()

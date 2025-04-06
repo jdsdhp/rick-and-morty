@@ -2,6 +2,9 @@ package com.jesusd0897.rickandmorty.view.theme
 
 import androidx.compose.ui.unit.dp
 
+/**
+ * Object containing padding values for the UI.
+ */
 internal object Padding {
     val extraSmall = 2.dp
     val small = 4.dp

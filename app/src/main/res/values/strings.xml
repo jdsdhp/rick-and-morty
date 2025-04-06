@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Rick And Morty</string>
     <string name="search">Search</string>
+    <string name="there_are_still_no_characters">There are still no characters</string>
+    <string name="an_error_has_occurred_please_try_again">An error has occurred. Please try again.</string>
+    <string name="retry">Retry</string>
 </resources>

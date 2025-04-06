@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +30,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -48,15 +52,27 @@ internal fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.navEvent.collect { onNavigate(it) }
+        }
+    }
+
     ScreenContent(
         modifier = modifier,
         uiState = uiState,
+        onEvent = viewModel::onEvent,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ScreenContent(modifier: Modifier = Modifier, uiState: ViewModel.UiState) {
+private fun ScreenContent(
+    modifier: Modifier = Modifier,
+    uiState: ViewModel.UiState,
+    onEvent: (ViewModel.Event) -> Unit,
+) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -103,7 +119,7 @@ private fun ScreenContent(modifier: Modifier = Modifier, uiState: ViewModel.UiSt
                         .padding(horizontal = Padding.normal),
                     character = item,
                 ) {
-
+                    onEvent(ViewModel.Event.OnItemClick(item))
                 }
             }
         }

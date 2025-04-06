@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
 import com.jesusd0897.rickandmorty.view.navigation.NavigationGraph
 import com.jesusd0897.rickandmorty.view.screen.splash.SplashViewModel
 import com.jesusd0897.rickandmorty.view.theme.RickAndMortyTheme
@@ -20,9 +19,8 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().setKeepOnScreenCondition { splashViewModel.keepSplashScreen }
         enableEdgeToEdge()
         setContent {
-            val navController = rememberNavController()
             RickAndMortyTheme {
-                NavigationGraph(navController)
+                NavigationGraph()
             }
         }
     }

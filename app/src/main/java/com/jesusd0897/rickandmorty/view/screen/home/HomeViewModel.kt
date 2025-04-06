@@ -65,11 +65,9 @@ internal class HomeViewModel(
     private fun onSearchQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         searchJob?.cancel()
-        if (query.length > 1) {
-            searchJob = viewModelScope.launch {
-                delay(1.5.seconds) // User input delay to avoid too many requests
-                refreshData()
-            }
+        searchJob = viewModelScope.launch {
+            delay(1.5.seconds) // User input delay to avoid too many requests
+            refreshData()
         }
     }
 

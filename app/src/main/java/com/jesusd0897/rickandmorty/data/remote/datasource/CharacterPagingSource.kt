@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.jesusd0897.rickandmorty.data.remote.mapper.toEntity
 import com.jesusd0897.rickandmorty.data.remote.service.CharacterApiService
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
+import retrofit2.HttpException
 
 /**
  * The paging source for the characters.
@@ -28,6 +29,16 @@ internal class CharacterPagingSource(
                 nextKey = if (response.info.next == null) null else currentPage + 1
             )
 
+        } catch (e: HttpException) {
+            if (e.code() == 404) { // Empty results
+                LoadResult.Page(
+                    data = emptyList(),
+                    prevKey = null,
+                    nextKey = null
+                )
+            } else {
+                LoadResult.Error(e)
+            }
         } catch (e: Exception) {
             LoadResult.Error(e)
         }

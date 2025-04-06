@@ -13,13 +13,16 @@ internal class CharacterRepositoryImpl(
     private val apiService: CharacterApiService
 ) : CharacterRepository {
 
-    override fun getCharacters(pageSize: Int): Flow<PagingData<CharacterEntity>> = Pager(
+    override fun getCharacters(
+        pageSize: Int,
+        nameQuery: String,
+    ): Flow<PagingData<CharacterEntity>> = Pager(
         config = PagingConfig(
             pageSize = pageSize,
             enablePlaceholders = false
         ),
         pagingSourceFactory = {
-            CharacterPagingSource(apiService)
+            CharacterPagingSource(apiService = apiService, nameQuery = nameQuery)
         }
     ).flow
 }

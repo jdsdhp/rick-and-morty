@@ -17,9 +17,10 @@ class GetCharactersUseCase(private val repository: CharacterRepository) {
 
     /**
      * Fetches characters from the repository and returns a flow of paging data.
+     * @param nameQuery The name query.
      * @return A flow of paging data of characters.
      */
-    operator fun invoke(): Flow<PagingData<CharacterEntity>> =
-        repository.getCharacters(pageSize = PAGE_SIZE)
+    operator fun invoke(nameQuery: String): Flow<PagingData<CharacterEntity>> =
+        repository.getCharacters(pageSize = PAGE_SIZE, nameQuery = nameQuery)
 
 }

@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
-import com.jesusd0897.rickandmorty.domain.entity.ErrorType
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharactersUseCase
 import com.jesusd0897.rickandmorty.view.navigation.HomeNavDestination
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,15 +27,13 @@ internal class HomeViewModel(
     getCharactersUseCase: GetCharactersUseCase
 ) : ViewModel() {
 
-    data class Error(val type: ErrorType, val throwable: Throwable?)
-
     data class UiState(
-        val error: Error? = null,
+        val searchQuery: String = "",
     )
 
     sealed class Event {
         data object OnRefresh : Event()
-        data object OnSearchClick : Event()
+        data class OnSearchQueryChange(val query: String) : Event()
         data class OnItemClick(val character: CharacterEntity) : Event()
     }
 
@@ -46,19 +45,31 @@ internal class HomeViewModel(
     val navEvent = _navEvent.asSharedFlow()
 
     private val refreshTrigger = MutableStateFlow(0)
+    private var searchJob: Job? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val characters: Flow<PagingData<CharacterEntity>> = refreshTrigger
         .flatMapLatest {
-            getCharactersUseCase()
+            getCharactersUseCase(nameQuery = _uiState.value.searchQuery)
         }
         .cachedIn(viewModelScope)
 
     fun onEvent(event: Event) {
         when (event) {
             is Event.OnRefresh -> refreshData()
-            is Event.OnSearchClick -> onSearchClick()
             is Event.OnItemClick -> onCharacterClick(event.character)
+            is Event.OnSearchQueryChange -> onSearchQueryChange(event.query)
+        }
+    }
+
+    private fun onSearchQueryChange(query: String) {
+        _uiState.update { it.copy(searchQuery = query) }
+        searchJob?.cancel()
+        if (query.length > 1) {
+            searchJob = viewModelScope.launch {
+                delay(1.5.seconds) // User input delay to avoid too many requests
+                refreshData()
+            }
         }
     }
 
@@ -66,10 +77,6 @@ internal class HomeViewModel(
         viewModelScope.launch {
             _navEvent.emit(HomeNavDestination.Detail(character = character))
         }
-    }
-
-    private fun onSearchClick() {
-        // TODO("Not yet implemented")
     }
 
     private fun refreshData() {

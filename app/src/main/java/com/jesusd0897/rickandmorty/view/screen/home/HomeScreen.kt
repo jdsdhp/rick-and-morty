@@ -14,20 +14,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.PlayCircle
-import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -54,6 +49,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.jesusd0897.rickandmorty.R
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
+import com.jesusd0897.rickandmorty.view.composable.SearchToolbarScaffold
 import com.jesusd0897.rickandmorty.view.theme.Padding
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -96,38 +92,14 @@ private fun ScreenContent(
     val coroutineScope = rememberCoroutineScope()
     var showError by remember { mutableStateOf(false) }
 
-    Scaffold(
+    SearchToolbarScaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.app_name),
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.TwoTone.Search,
-                            contentDescription = stringResource(R.string.search)
-                        )
-                    }
-                }
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        title = stringResource(R.string.app_name),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        label = stringResource(R.string.search),
+        value = uiState.searchQuery,
+        onValueChange = { onEvent(ViewModel.Event.OnSearchQueryChange(query = it)) },
+        trailingIconClick = { onEvent(ViewModel.Event.OnSearchQueryChange(query = "")) },
     ) { innerPadding ->
 
         Column(Modifier.padding(innerPadding)) {

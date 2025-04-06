@@ -10,15 +10,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.PlayCircle
 import androidx.compose.material.icons.twotone.Search
-import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -34,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -219,10 +223,23 @@ private fun CharacterItem(
     character: CharacterEntity,
     onItemClick: () -> Unit,
 ) {
-    Card(modifier = modifier, onClick = onItemClick) {
+    val backgroundColor = when (character.status.lowercase()) {
+        "alive" -> MaterialTheme.colorScheme.primaryContainer
+        "dead" -> MaterialTheme.colorScheme.errorContainer
+        else -> MaterialTheme.colorScheme.surfaceContainer
+    }
+
+    OutlinedCard(
+        modifier = modifier,
+        onClick = onItemClick,
+        colors = CardDefaults.outlinedCardColors(containerColor = backgroundColor)
+    ) {
         Row {
             AsyncImage(
-                modifier = Modifier.size(86.dp),
+                modifier = Modifier
+                    .size(86.dp)
+                    .padding(Padding.normal)
+                    .clip(MaterialTheme.shapes.small),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(character.image)
                     .crossfade(enable = true)
@@ -246,6 +263,20 @@ private fun CharacterItem(
                 )
 
                 Text(text = character.gender, style = MaterialTheme.typography.bodySmall)
+
+                Spacer(modifier = Modifier.height(Padding.small))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.TwoTone.PlayCircle,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(Padding.small))
+                    Text(
+                        text = "${character.episode.size}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
         }
     }

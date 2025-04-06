@@ -16,8 +16,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Add splash screen
         installSplashScreen().setKeepOnScreenCondition { splashViewModel.keepSplashScreen }
+
+        // Enable edge to edge to support all Android S+ devices
         enableEdgeToEdge()
+
+        // Set Compose content
         setContent {
             RickAndMortyTheme {
                 NavigationGraph()

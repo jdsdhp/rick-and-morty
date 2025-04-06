@@ -6,12 +6,16 @@ import com.jesusd0897.rickandmorty.data.remote.mapper.toEntity
 import com.jesusd0897.rickandmorty.data.remote.service.CharacterApiService
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
 
+/**
+ * The paging source for the characters.
+ * @property apiService The API service.
+ */
 internal class CharacterPagingSource(
     private val apiService: CharacterApiService
 ) : PagingSource<Int, CharacterEntity>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterEntity> {
-        return try {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterEntity> =
+        try {
             val currentPage = params.key ?: 1
             val response = apiService.getCharacters(currentPage)
             val characters = response.results.map { it.toEntity() }
@@ -25,11 +29,11 @@ internal class CharacterPagingSource(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
-    }
 
     override fun getRefreshKey(state: PagingState<Int, CharacterEntity>): Int? =
         state.anchorPosition?.let { anchor ->
             state.closestPageToPosition(anchor)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchor)?.nextKey?.minus(1)
         }
+
 }

@@ -14,6 +14,10 @@ import com.jesusd0897.rickandmorty.view.screen.home.HomeScreen
 import kotlinx.serialization.json.Json
 import java.net.URLEncoder
 
+/**
+ * Navigation destinations
+ * @param route The route to navigate to.
+ */
 internal sealed class Nav(val route: String) {
     companion object Keys {
         const val HOME = "home"
@@ -29,6 +33,10 @@ internal sealed class Nav(val route: String) {
     }
 }
 
+/**
+ * Navigation graph for the app.
+ * @param navController The navigation controller.
+ */
 @Composable
 internal fun NavigationGraph(navController: NavHostController = rememberNavController()) {
     NavHost(

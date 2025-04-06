@@ -17,4 +17,11 @@ interface CharacterRepository {
      */
     fun getCharacters(pageSize: Int, nameQuery: String): Flow<PagingData<CharacterEntity>>
 
+    /**
+     * Fetches a character by its ID from the repository.
+     * @param characterId The ID of the character.
+     * @return A result containing the character entity or an error.
+     */
+    suspend fun getCharacterById(characterId: Int): Result<CharacterEntity>
+
 }

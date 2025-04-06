@@ -23,14 +23,24 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
+/**
+ * View model for the home screen.
+ * @property getCharactersUseCase The use case to get characters.
+ */
 internal class HomeViewModel(
     getCharactersUseCase: GetCharactersUseCase
 ) : ViewModel() {
 
+    /**
+     * The UI state.
+     */
     data class UiState(
         val searchQuery: String = "",
     )
 
+    /**
+     * The events that can be triggered.
+     */
     sealed class Event {
         data object OnRefresh : Event()
         data class OnSearchQueryChange(val query: String) : Event()
@@ -38,15 +48,33 @@ internal class HomeViewModel(
     }
 
     private val _uiState = MutableStateFlow(UiState())
+
+    /**
+     * The UI state.
+     */
     val uiState = _uiState.asStateFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5.seconds), UiState())
 
     private val _navEvent = MutableSharedFlow<HomeNavDestination>()
+
+    /**
+     * The navigation events.
+     */
     val navEvent = _navEvent.asSharedFlow()
 
+    /**
+     * The trigger to refresh the data.
+     */
     private val refreshTrigger = MutableStateFlow(0)
+
+    /**
+     * The search job.
+     */
     private var searchJob: Job? = null
 
+    /**
+     * The characters. Use a trigger to refresh the data.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val characters: Flow<PagingData<CharacterEntity>> = refreshTrigger
         .flatMapLatest {
@@ -54,6 +82,10 @@ internal class HomeViewModel(
         }
         .cachedIn(viewModelScope)
 
+    /**
+     * Handles events.
+     * @param event The event to handle.
+     */
     fun onEvent(event: Event) {
         when (event) {
             is Event.OnRefresh -> refreshData()
@@ -62,6 +94,10 @@ internal class HomeViewModel(
         }
     }
 
+    /**
+     * Handles the search query change.
+     * @param query The new search query.
+     */
     private fun onSearchQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         searchJob?.cancel()
@@ -71,12 +107,19 @@ internal class HomeViewModel(
         }
     }
 
+    /**
+     * Handles the character click.
+     * @param character The character that was clicked.
+     */
     private fun onCharacterClick(character: CharacterEntity) {
         viewModelScope.launch {
-            _navEvent.emit(HomeNavDestination.Detail(character = character))
+            _navEvent.emit(HomeNavDestination.CharacterDetail(characterId = character.id))
         }
     }
 
+    /**
+     * Refreshes the data.
+     */
     private fun refreshData() {
         refreshTrigger.update { it.inc() }
     }

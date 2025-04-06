@@ -7,12 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jesusd0897.rickandmorty.view.navigation.args.CharacterArg
-import com.jesusd0897.rickandmorty.view.navigation.mappers.toArg
-import com.jesusd0897.rickandmorty.view.screen.detail.DetailScreen
+import com.jesusd0897.rickandmorty.view.screen.detail.CharacterDetailScreen
 import com.jesusd0897.rickandmorty.view.screen.home.HomeScreen
-import kotlinx.serialization.json.Json
-import java.net.URLEncoder
 
 /**
  * Navigation destinations
@@ -21,15 +17,13 @@ import java.net.URLEncoder
 internal sealed class Nav(val route: String) {
     companion object Keys {
         const val HOME = "home"
-        const val DETAIL = "detail"
-        const val CHARACTER = "character"
+        const val CHARACTER_DETAIL = "character"
+        const val CHARACTER_ID = "characterId"
     }
 
     data object Home : Nav(route = HOME)
-    data object Detail : Nav(route = "$DETAIL/{$CHARACTER}") {
-        fun withArg(character: CharacterArg): String = "$DETAIL/${
-            URLEncoder.encode(Json.encodeToString(character), Charsets.UTF_8.name())
-        }"
+    data object Detail : Nav(route = "$CHARACTER_DETAIL/{$CHARACTER_ID}") {
+        fun withArg(characterId: Int): String = "$CHARACTER_DETAIL/${characterId}"
     }
 }
 
@@ -46,20 +40,17 @@ internal fun NavigationGraph(navController: NavHostController = rememberNavContr
         composable(Nav.Home.route) {
             HomeScreen(
                 onNavigate = { destination ->
-                    if (destination is HomeNavDestination.Detail) {
-                        val characterArg: CharacterArg = destination.character.toArg()
-                        navController.navigate(route = Nav.Detail.withArg(characterArg))
+                    if (destination is HomeNavDestination.CharacterDetail) {
+                        navController.navigate(route = Nav.Detail.withArg(destination.characterId))
                     }
                 }
             )
         }
         composable(
             route = Nav.Detail.route,
-            arguments = listOf(navArgument(Nav.CHARACTER) {
-                type = NavType.StringType
-            })
+            arguments = listOf(navArgument(Nav.CHARACTER_ID) { type = NavType.IntType }),
         ) {
-            DetailScreen(
+            CharacterDetailScreen(
                 onNavigate = { destination ->
                     if (destination is DetailNavDestination.Back) {
                         navController.navigateUp()

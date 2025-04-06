@@ -1,5 +1,6 @@
 package com.jesusd0897.rickandmorty.domain.di
 
+import com.jesusd0897.rickandmorty.domain.usecase.GetCharacterByIdUseCase
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharactersUseCase
 import org.koin.dsl.module
 
@@ -9,4 +10,5 @@ import org.koin.dsl.module
 val domainModule = module {
     // Use cases
     single { GetCharactersUseCase(get()) }
+    single { GetCharacterByIdUseCase(get()) }
 }

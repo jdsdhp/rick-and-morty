@@ -4,4 +4,12 @@
     <string name="there_are_still_no_characters">There are still no characters</string>
     <string name="an_error_has_occurred_please_try_again">An error has occurred. Please try again.</string>
     <string name="retry">Retry</string>
+    <string name="back">Back</string>
+    <string name="character_detail">Character Detail</string>
+    <string name="error_loading_character">Error loading character</string>
+    <string name="go_back">Go Back</string>
+    <string name="type">Type: %1$s</string>
+    <string name="origin">Origin: %1$s</string>
+    <string name="location">Location: %1$s</string>
+    <string name="episodes">%1$s episodes</string>
 </resources>

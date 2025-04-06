@@ -58,6 +58,12 @@ import org.koin.compose.viewmodel.koinViewModel
 import com.jesusd0897.rickandmorty.view.navigation.DetailNavDestination as NavDestination
 import com.jesusd0897.rickandmorty.view.screen.detail.CharacterDetailViewModel as ViewModel
 
+/**
+ * The character detail screen.
+ * @param modifier The modifier to apply to the screen.
+ * @param viewModel The view model to use.
+ * @param onNavigate The callback to invoke when navigating to a destination.
+ */
 @Composable
 internal fun CharacterDetailScreen(
     modifier: Modifier = Modifier,
@@ -81,6 +87,12 @@ internal fun CharacterDetailScreen(
 
 }
 
+/**
+ * The screen content for the character detail screen.
+ * @param modifier The modifier to apply to the screen.
+ * @param uiState The UI state to use.
+ * @param onEvent The callback to invoke when an event occurs.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScreenContent(

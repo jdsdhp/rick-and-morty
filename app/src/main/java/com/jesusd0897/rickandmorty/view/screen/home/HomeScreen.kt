@@ -55,6 +55,12 @@ import org.koin.compose.viewmodel.koinViewModel
 import com.jesusd0897.rickandmorty.view.navigation.HomeNavDestination as NavDestination
 import com.jesusd0897.rickandmorty.view.screen.home.HomeViewModel as ViewModel
 
+/**
+ * Composable for the home screen.
+ * @param modifier The modifier to apply to the screen.
+ * @param viewModel The view model to use.
+ * @param onNavigate The callback to invoke when navigating to a destination.
+ */
 @Composable
 internal fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -79,6 +85,13 @@ internal fun HomeScreen(
     )
 }
 
+/**
+ * Composable for the screen content.
+ * @param modifier The modifier to apply to the screen.
+ * @param uiState The UI state to use.
+ * @param characters The characters to display.
+ * @param onEvent The callback to invoke when an event occurs.
+ */
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
@@ -145,6 +158,12 @@ private fun ScreenContent(
     }
 }
 
+/**
+ * Composable for the characters list.
+ * @param modifier The modifier to apply to the list.
+ * @param characters The characters to display.
+ * @param onEvent The callback to invoke when an event occurs.
+ */
 @Composable
 private fun CharactersList(
     modifier: Modifier = Modifier,
@@ -187,6 +206,12 @@ private fun CharactersList(
     }
 }
 
+/**
+ * Composable for the character item.
+ * @param modifier The modifier to apply to the item.
+ * @param character The character to display.
+ * @param onItemClick The callback to invoke when the item is clicked.
+ */
 @Composable
 private fun CharacterItem(
     modifier: Modifier = Modifier,

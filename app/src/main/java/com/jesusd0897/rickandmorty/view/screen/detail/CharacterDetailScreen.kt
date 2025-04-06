@@ -10,14 +10,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import com.jesusd0897.rickandmorty.view.theme.Padding
 import org.koin.compose.viewmodel.koinViewModel
 import com.jesusd0897.rickandmorty.view.navigation.DetailNavDestination as NavDestination
-import com.jesusd0897.rickandmorty.view.screen.detail.DetailViewModel as ViewModel
+import com.jesusd0897.rickandmorty.view.screen.detail.CharacterDetailViewModel as ViewModel
 
 @Composable
 internal fun DetailScreen(
@@ -25,9 +29,14 @@ internal fun DetailScreen(
     viewModel: ViewModel = koinViewModel(),
     onNavigate: (NavDestination) -> Unit,
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val character by viewModel.character.collectAsStateWithLifecycle(null)
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.navEvent.collect { onNavigate(it) }
+        }
+    }
 
     Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -37,10 +46,10 @@ internal fun DetailScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = character?.name ?: "")
-            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = uiState.character?.name ?: "")
+            Spacer(modifier = Modifier.height(Padding.normal))
             Button(onClick = {
-                onNavigate(NavDestination.Back)
+                viewModel.onEvent(ViewModel.Event.OnBackClick)
             }) {
                 Text(text = "Go Back")
             }

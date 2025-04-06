@@ -5,25 +5,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
 import com.jesusd0897.rickandmorty.domain.entity.ErrorType
+import com.jesusd0897.rickandmorty.domain.usecase.GetCharacterByIdUseCase
 import com.jesusd0897.rickandmorty.view.navigation.DetailNavDestination
 import com.jesusd0897.rickandmorty.view.navigation.Nav
-import com.jesusd0897.rickandmorty.view.navigation.args.CharacterArg
-import com.jesusd0897.rickandmorty.view.navigation.mappers.toEntity
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.serialization.json.Json
-import java.net.URLDecoder
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-internal class DetailViewModel(
+internal class CharacterDetailViewModel(
     stateHandle: SavedStateHandle,
+    private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
 ) : ViewModel() {
 
     data class Error(val type: ErrorType, val throwable: Throwable?)
@@ -31,7 +29,7 @@ internal class DetailViewModel(
     data class UiState(
         val isLoading: Boolean = false,
         val error: Error? = null,
-        val characters: List<CharacterEntity> = emptyList()
+        val character: CharacterEntity? = null,
     )
 
     sealed class Event {
@@ -45,23 +43,40 @@ internal class DetailViewModel(
     private val _navEvent = MutableSharedFlow<DetailNavDestination>()
     val navEvent = _navEvent.asSharedFlow()
 
-    val character: Flow<CharacterEntity?> =
-        stateHandle.getStateFlow<String?>(key = Nav.CHARACTER, initialValue = null)
-            .mapNotNull { characterAsString ->
-                characterAsString?.let { encodedCharacter ->
-                    val decoded = URLDecoder.decode(encodedCharacter, Charsets.UTF_8.name())
-                    val arg = Json.decodeFromString<CharacterArg>(decoded)
-                    arg.toEntity()
-                }
-            }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5.seconds), null)
+    private val characterId: Int by lazy { stateHandle.get<Int>(Nav.CHARACTER_ID)!! }
+
+    init {
+        fetchCharacterById()
+    }
 
     fun onEvent(event: Event) {
         when (event) {
-            Event.OnBackClick -> {
-                // TODO()
-            }
+            Event.OnBackClick -> onBackClick()
         }
+    }
+
+    private fun onBackClick() {
+        viewModelScope.launch {
+            _navEvent.emit(DetailNavDestination.Back)
+        }
+    }
+
+    private fun fetchCharacterById() {
+        _uiState.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            getCharacterByIdUseCase(id = characterId)
+                .onSuccess { character ->
+                    _uiState.update { it.copy(character = character, isLoading = false) }
+                }.onFailure { throwable ->
+                    _uiState.update {
+                        it.copy(
+                            error = Error(ErrorType.LOAD, throwable),
+                            isLoading = false,
+                        )
+                    }
+                }
+        }
+
     }
 
 }

@@ -73,7 +73,7 @@ internal class HomeViewModel(
 
     private fun onCharacterClick(character: CharacterEntity) {
         viewModelScope.launch {
-            _navEvent.emit(HomeNavDestination.Detail(character = character))
+            _navEvent.emit(HomeNavDestination.CharacterDetail(characterId = character.id))
         }
     }
 

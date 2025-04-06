@@ -2,11 +2,11 @@ package com.jesusd0897.rickandmorty.view.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
 import com.jesusd0897.rickandmorty.domain.entity.ErrorType
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharactersUseCase
 import com.jesusd0897.rickandmorty.view.navigation.HomeNavDestination
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
@@ -27,7 +26,6 @@ internal class HomeViewModel(
     data class UiState(
         val isLoading: Boolean = false,
         val error: Error? = null,
-        val characters: List<CharacterEntity> = emptyList()
     )
 
     sealed class Event {
@@ -42,6 +40,8 @@ internal class HomeViewModel(
 
     private val _navEvent = MutableSharedFlow<HomeNavDestination>()
     val navEvent = _navEvent.asSharedFlow()
+
+    val characters = getCharactersUseCase().cachedIn(viewModelScope)
 
     init {
         fetchData()
@@ -66,11 +66,7 @@ internal class HomeViewModel(
     }
 
     private fun fetchData() {
-        viewModelScope.launch {
-            delay(2.seconds) // Simulate network delay
-            val characters = getCharactersUseCase.invoke()
-            _uiState.update { it.copy(characters = characters) }
-        }
+        // TODO("Not yet implemented")
     }
 
 }

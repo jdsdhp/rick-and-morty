@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Card
@@ -34,6 +33,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -51,6 +52,7 @@ internal fun HomeScreen(
     onNavigate: (NavDestination) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val characters = viewModel.characters.collectAsLazyPagingItems()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(lifecycleOwner.lifecycle) {
@@ -62,6 +64,7 @@ internal fun HomeScreen(
     ScreenContent(
         modifier = modifier,
         uiState = uiState,
+        characters = characters,
         onEvent = viewModel::onEvent,
     )
 }
@@ -71,6 +74,7 @@ internal fun HomeScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     uiState: ViewModel.UiState,
+    characters: LazyPagingItems<CharacterEntity>,
     onEvent: (ViewModel.Event) -> Unit,
 ) {
     Scaffold(
@@ -111,15 +115,18 @@ private fun ScreenContent(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            items(uiState.characters, key = { it.id }) { item ->
-                CharacterItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Padding.small)
-                        .padding(horizontal = Padding.normal),
-                    character = item,
-                ) {
-                    onEvent(ViewModel.Event.OnItemClick(item))
+            items(characters.itemCount) { index ->
+                val item: CharacterEntity? = characters[index]
+                item?.let {
+                    CharacterItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = Padding.small)
+                            .padding(horizontal = Padding.normal),
+                        character = it,
+                    ) {
+                        onEvent(ViewModel.Event.OnItemClick(it))
+                    }
                 }
             }
         }

@@ -7,7 +7,7 @@ import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
 import com.jesusd0897.rickandmorty.domain.entity.ErrorType
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharacterByIdUseCase
 import com.jesusd0897.rickandmorty.view.navigation.DetailNavDestination
-import com.jesusd0897.rickandmorty.view.navigation.Nav
+import com.jesusd0897.rickandmorty.view.navigation.NavKeys
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -73,7 +73,7 @@ internal class CharacterDetailViewModel(
     /**
      * The character ID using navigation argument.
      */
-    private val characterId: Int by lazy { savedStateHandle.get<Int>(Nav.CHARACTER_ID)!! }
+    private val characterId: Int by lazy { savedStateHandle.get<Int>(NavKeys.ID)!! }
 
     init {
         fetchCharacterById()

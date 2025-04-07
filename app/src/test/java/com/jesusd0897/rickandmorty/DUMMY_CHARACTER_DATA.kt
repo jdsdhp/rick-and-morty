@@ -7,7 +7,7 @@ import com.jesusd0897.rickandmorty.domain.entity.OriginEntity
 val DUMMY_CHARACTER_DATA = listOf(
     CharacterEntity(
         created = "2017-11-04T18:48:46.250Z",
-        episode = (1..51).map { "https://rickandmortyapi.com/api/episode/$it" },
+        episodes = (1..51).map { "https://rickandmortyapi.com/api/episode/$it" },
         gender = "Male",
         id = 1,
         image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
@@ -21,7 +21,7 @@ val DUMMY_CHARACTER_DATA = listOf(
     ),
     CharacterEntity(
         created = "2017-11-04T18:50:21.651Z",
-        episode = (1..51).map { "https://rickandmortyapi.com/api/episode/$it" },
+        episodes = (1..51).map { "https://rickandmortyapi.com/api/episode/$it" },
         gender = "Male",
         id = 2,
         image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
@@ -35,7 +35,7 @@ val DUMMY_CHARACTER_DATA = listOf(
     ),
     CharacterEntity(
         created = "2017-11-04T19:09:56.428Z",
-        episode = listOf(
+        episodes = listOf(
             "https://rickandmortyapi.com/api/episode/6",
             "https://rickandmortyapi.com/api/episode/7",
             "https://rickandmortyapi.com/api/episode/8",
@@ -98,7 +98,7 @@ val DUMMY_CHARACTER_DATA = listOf(
     ),
     CharacterEntity(
         created = "2017-11-04T19:22:43.665Z",
-        episode = listOf(
+        episodes = listOf(
             "https://rickandmortyapi.com/api/episode/6",
             "https://rickandmortyapi.com/api/episode/7",
             "https://rickandmortyapi.com/api/episode/8",
@@ -161,7 +161,7 @@ val DUMMY_CHARACTER_DATA = listOf(
     ),
     CharacterEntity(
         created = "2017-11-04T19:26:56.301Z",
-        episode = listOf(
+        episodes = listOf(
             "https://rickandmortyapi.com/api/episode/6",
             "https://rickandmortyapi.com/api/episode/7",
             "https://rickandmortyapi.com/api/episode/8",

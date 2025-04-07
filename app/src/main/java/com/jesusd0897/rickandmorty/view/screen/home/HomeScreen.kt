@@ -268,7 +268,7 @@ private fun CharacterItem(
                     )
                     Spacer(modifier = Modifier.width(Padding.small))
                     Text(
-                        text = "${character.episode.size}",
+                        text = "${character.episodes.size}",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

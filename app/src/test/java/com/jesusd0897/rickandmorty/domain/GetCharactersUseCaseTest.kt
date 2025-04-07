@@ -2,12 +2,12 @@ package com.jesusd0897.rickandmorty.domain
 
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
 import com.jesusd0897.rickandmorty.domain.repository.CharacterRepository
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharactersUseCase
-import com.jesusd0897.rickandmorty.DUMMY_CHARACTER_DATA
+import com.jesusd0897.rickandmorty.util.CharacterDiffCallback
+import com.jesusd0897.rickandmorty.util.DUMMY_CHARACTER_DATA
+import com.jesusd0897.rickandmorty.util.NoopListCallback
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +23,7 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetCharactersUseCaseTest {
+internal class GetCharactersUseCaseTest {
 
     private lateinit var repository: CharacterRepository
     private lateinit var useCase: GetCharactersUseCase
@@ -34,6 +34,11 @@ class GetCharactersUseCaseTest {
         useCase = GetCharactersUseCase(repository)
     }
 
+    /**
+     * Verifies that the use case correctly filters characters by name
+     * and emits a PagingData containing only the matching entries.
+     * The test simulates UI behavior using AsyncPagingDataDiffer.
+     */
     @Test
     fun `returns filtered PagingData when repository emits matching characters`() {
         val scheduler = TestCoroutineScheduler()
@@ -77,23 +82,4 @@ class GetCharactersUseCaseTest {
         }
     }
 
-    private class NoopListCallback : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int) {}
-        override fun onRemoved(position: Int, count: Int) {}
-        override fun onMoved(fromPosition: Int, toPosition: Int) {}
-        override fun onChanged(position: Int, count: Int, payload: Any?) {}
-    }
-
-    private class CharacterDiffCallback : DiffUtil.ItemCallback<CharacterEntity>() {
-        override fun areItemsTheSame(oldItem: CharacterEntity, newItem: CharacterEntity): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: CharacterEntity,
-            newItem: CharacterEntity
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
 }

@@ -8,8 +8,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class CharacterDtoMapperTest {
+internal class CharacterDtoMapperTest {
 
+    /**
+     * Verifies that all fields from CharacterDto are correctly mapped to CharacterEntity.
+     */
     @Test
     fun `toEntity maps all CharacterDto fields correctly`() {
         val dto = CharacterDto(
@@ -45,6 +48,10 @@ class CharacterDtoMapperTest {
         assertEquals(dto.type, entity.type)
     }
 
+    /**
+     * Verifies that toEntity handles unexpected or empty values without throwing exceptions,
+     * and maps them safely into default/empty values in CharacterEntity.
+     */
     @Test
     fun `toEntity handles empty and unexpected values safely`() {
         val dto = CharacterDto(
@@ -79,4 +86,5 @@ class CharacterDtoMapperTest {
         assertEquals("", entity.created)
         assertEquals("", entity.type)
     }
+
 }

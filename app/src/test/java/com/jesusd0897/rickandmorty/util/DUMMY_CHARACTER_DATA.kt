@@ -1,10 +1,10 @@
-package com.jesusd0897.rickandmorty
+package com.jesusd0897.rickandmorty.util
 
 import com.jesusd0897.rickandmorty.domain.entity.CharacterEntity
 import com.jesusd0897.rickandmorty.domain.entity.LocationEntity
 import com.jesusd0897.rickandmorty.domain.entity.OriginEntity
 
-val DUMMY_CHARACTER_DATA = listOf(
+internal val DUMMY_CHARACTER_DATA = listOf(
     CharacterEntity(
         created = "2017-11-04T18:48:46.250Z",
         episodes = (1..51).map { "https://rickandmortyapi.com/api/episode/$it" },

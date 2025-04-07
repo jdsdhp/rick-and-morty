@@ -55,7 +55,7 @@ Each layer communicates only with its adjacent layer, ensuring decoupling and te
 
 ## 📷 Screenshots
 
-| Characters List | Character Detail | Scroll Interaction (Dark)       | Character Detail (Dark)         |
+| Characters List | Character Detail | Characters List (Dark)       | Character Detail (Dark)         |
 |-----------------|------------------|---------------------------------|---------------------------------|
 | ![Art 1](screenshots/art1.webp) | ![Art 2](screenshots/art2.webp) | ![Art 3](screenshots/art3.webp) | ![Art 4](screenshots/art4.webp) |
 

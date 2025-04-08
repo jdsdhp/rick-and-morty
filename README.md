@@ -42,11 +42,6 @@ Each layer communicates only with its adjacent layer, ensuring decoupling and te
 ---
 
 ## 🚧 TODOs
-
-- 🧪 Add unit tests for:
-    - Domain layer (use cases)
-    - Data layer (repositories and data sources)
-    - UI layer (ViewModels and UI state)
 - 📱 Add responsiveness support for tablets/foldables
 - 🌙 Optional: Dark mode toggle
 - 🔍 Optional: Character search suggestions

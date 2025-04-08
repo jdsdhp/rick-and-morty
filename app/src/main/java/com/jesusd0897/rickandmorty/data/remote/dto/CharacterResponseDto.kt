@@ -7,7 +7,7 @@ internal data class CharacterResponseDto(
 
 internal data class CharacterDto(
     val created: String,
-    val episode: List<String?>,
+    val episodes: List<String?>,
     val gender: String,
     val id: Int,
     val image: String,

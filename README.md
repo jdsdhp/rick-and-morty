@@ -42,11 +42,6 @@ Each layer communicates only with its adjacent layer, ensuring decoupling and te
 ---
 
 ## 🚧 TODOs
-
-- 🧪 Add unit tests for:
-    - Domain layer (use cases)
-    - Data layer (repositories and data sources)
-    - UI layer (ViewModels and UI state)
 - 📱 Add responsiveness support for tablets/foldables
 - 🌙 Optional: Dark mode toggle
 - 🔍 Optional: Character search suggestions
@@ -55,7 +50,7 @@ Each layer communicates only with its adjacent layer, ensuring decoupling and te
 
 ## 📷 Screenshots
 
-| Characters List | Character Detail | Scroll Interaction (Dark)       | Character Detail (Dark)         |
+| Characters List | Character Detail | Characters List (Dark)       | Character Detail (Dark)         |
 |-----------------|------------------|---------------------------------|---------------------------------|
 | ![Art 1](screenshots/art1.webp) | ![Art 2](screenshots/art2.webp) | ![Art 3](screenshots/art3.webp) | ![Art 4](screenshots/art4.webp) |
 

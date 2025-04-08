@@ -279,7 +279,7 @@ private fun ScreenContent(
                                     Text(
                                         text = stringResource(
                                             R.string.episodes,
-                                            character.episode.size
+                                            character.episodes.size
                                         )
                                     )
                                 }

@@ -9,7 +9,7 @@ import com.jesusd0897.rickandmorty.domain.entity.OriginEntity
 
 internal fun CharacterDto.toEntity() = CharacterEntity(
     created = created,
-    episode = episode,
+    episodes = episodes,
     gender = gender,
     id = id,
     image = image,

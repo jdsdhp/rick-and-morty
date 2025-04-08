@@ -7,6 +7,7 @@ import com.jesusd0897.rickandmorty.domain.entity.LocationEntity
 import com.jesusd0897.rickandmorty.domain.entity.OriginEntity
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharactersUseCase
 import com.jesusd0897.rickandmorty.util.DUMMY_CHARACTER_DATA
+import com.jesusd0897.rickandmorty.util.MainDispatcherRule
 import com.jesusd0897.rickandmorty.view.navigation.HomeNavDestination
 import com.jesusd0897.rickandmorty.view.screen.home.HomeViewModel
 import io.mockk.coEvery

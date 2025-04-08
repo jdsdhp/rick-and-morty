@@ -7,41 +7,20 @@ import com.jesusd0897.rickandmorty.domain.entity.ErrorType
 import com.jesusd0897.rickandmorty.domain.entity.LocationEntity
 import com.jesusd0897.rickandmorty.domain.entity.OriginEntity
 import com.jesusd0897.rickandmorty.domain.usecase.GetCharacterByIdUseCase
+import com.jesusd0897.rickandmorty.util.MainDispatcherRule
 import com.jesusd0897.rickandmorty.view.navigation.DetailNavDestination
 import com.jesusd0897.rickandmorty.view.navigation.NavKeys
 import com.jesusd0897.rickandmorty.view.screen.detail.CharacterDetailViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
-
-@OptIn(ExperimentalCoroutinesApi::class)
-internal class MainDispatcherRule(
-    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
-) : TestWatcher(), TestRule {
-    override fun starting(description: Description) {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    override fun finished(description: Description) {
-        Dispatchers.resetMain()
-    }
-}
 
 internal class CharacterDetailViewModelTest {
 
